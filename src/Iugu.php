@@ -14,6 +14,7 @@ class Iugu
     {
         $this->client = $client;
         $this->token = $token;
+        $this->setAuth($token, '');
     }
 
     public function charge()
@@ -30,7 +31,14 @@ class Iugu
     {
         $this->token = $token;
 
+        $this->setAuth($token, '');
+
         return $this;
+    }
+
+    public function setAuth($user, $password)
+    {
+        $this->client->withBasicAuth($user, $password);
     }
 
     public function foo()

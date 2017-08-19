@@ -16,9 +16,7 @@ class ChargeTest extends TestCase
 
         $url = 'https://api.iugu.com/v1/payment_token';
 
-        $this->client->shouldReceive('withBasicAuth')->with('foo', '')->once()->andReturnSelf()
-            ->shouldReceive('post')->with($url, [
-            'account_id' => 123,
+        $data = [
             'method' => 'credit_card',
             'data' => [
                 'number' => 4111111111111111,
@@ -28,23 +26,18 @@ class ChargeTest extends TestCase
                 'month' => '01',
                 'year' => '2020',
             ],
-        ])->andReturn(new ZttpResponse(
-            \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
-        ));
+        ];
+
+        $this->client->shouldReceive('withBasicAuth')->with('foo', '')->once()
+            ->andReturnSelf()
+            ->shouldReceive('post')->with($url, ['account_id' => 123] + $data)
+            ->andReturn(new ZttpResponse(
+                \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
+            ));
 
         $this->iugu->setToken('foo');
 
-        $response = $this->iugu->charge()->generateToken(123, [
-            'method' => 'credit_card',
-            'data' => [
-                'number' => 4111111111111111,
-                'verification_value' => 123,
-                'first_name' => 'Mateus',
-                'last_name' => 'Guimarães',
-                'month' => '01',
-                'year' => '2020',
-            ],
-        ]);
+        $response = $this->iugu->charge()->generateToken(123, $data);
 
         $this->assertEquals($response->getToken(), $stub['id']);
         $this->assertEquals($response->id, $stub['id']);
