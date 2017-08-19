@@ -1,0 +1,12 @@
+{
+  "id": "77C2565F6F064A26ABED4255894224F0",
+  "method": "credit_card",
+  "extra_info": {
+    "brand": "VISA",
+    "holder_name": "João Silva",
+    "display_number": "XXXX-XXXX-XXXX-1111",
+    "month": 12,
+    "year": 2019
+  },
+  "test": false
+}
