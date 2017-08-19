@@ -25,6 +25,11 @@ class Iugu
         return new Charge($this);
     }
 
+    public function transfers()
+    {
+        return new Transfer($this);
+    }
+
     public function getClient()
     {
         return $this->client;
