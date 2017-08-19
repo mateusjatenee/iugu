@@ -17,8 +17,11 @@ class Iugu
         $this->setAuth($token, '');
     }
 
-    public function charge()
+    public function charge($data = null)
     {
+        if ($data) {
+            return (new Charge($this))->directCharge($data);
+        }
         return new Charge($this);
     }
 

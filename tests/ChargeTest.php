@@ -42,4 +42,36 @@ class ChargeTest extends TestCase
         $this->assertEquals($response->getToken(), $stub['id']);
         $this->assertEquals($response->id, $stub['id']);
     }
+
+    /** @test */
+    public function it_charges_someone()
+    {
+        $stub = $this->getStub('responses/charge.json');
+
+        $url = 'https://api.iugu.com/v1/charge';
+
+        $data = [
+            'token' => '123',
+            'email' => 'foo@bar.com',
+            'items' => [
+                [
+                    'description' => 'item 1',
+                    'quantity' => 2,
+                    'price_cents' => 1000,
+                ],
+            ],
+        ];
+
+        $this->client->shouldReceive('withBasicAuth')->with('foo', '')->once()
+            ->andReturnSelf()
+            ->shouldReceive('post')->with($url, $data)
+            ->andReturn(new ZttpResponse(
+                \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
+            ));
+
+        $response = $this->iugu->charge($data);
+
+        $this->assertEquals($response->getMessage(), $stub['message']);
+        $this->assertEquals($response->getInvoiceId(), $stub['invoice_id']);
+    }
 }
