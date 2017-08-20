@@ -30,4 +30,9 @@ class TransferResponse extends BaseResponse
     {
         return $this->receiver;
     }
+
+    public function getSender()
+    {
+        return $this->sender;
+    }
 }

@@ -9,7 +9,7 @@ class Resource
         return [
             'create_token' => 'https://api.iugu.com/v1/payment_token',
             'direct_charge' => 'https://api.iugu.com/v1/charge',
-            'money_transfer' => 'https://api.iugu.com/v1/transfers',
+            'transfers' => 'https://api.iugu.com/v1/transfers',
         ];
     }
 

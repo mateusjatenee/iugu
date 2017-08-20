@@ -2,6 +2,7 @@
 
 namespace Mateusjatenee\Iugu;
 
+use Illuminate\Support\Collection;
 use Mateusjatenee\Iugu\Resource;
 use Mateusjatenee\Iugu\Responses\TransferResponse;
 
@@ -17,10 +18,28 @@ class Transfer extends Resource
     public function transferTo($accountId, $amount)
     {
         $response = $this->iugu->client->post(
-            $this->getEndpoint('money_transfer'), $this->buildTransferData($accountId, $amount)
+            $this->getEndpoint('transfers'), $this->buildTransferData($accountId, $amount)
         );
 
         return new TransferResponse($response->json());
+    }
+
+    public function all()
+    {
+        $response = $this->iugu->client->get(
+            $this->getEndpoint('transfers')
+        );
+
+        $data = $response->json();
+
+        return [
+            'sent' => (new Collection($data['sent']))->map(function ($item) {
+                return new TransferResponse($item);
+            }),
+            'received' => (new Collection($data['received']))->map(function ($item) {
+                return new TransferResponse($item);
+            }),
+        ];
     }
 
     protected function buildTransferData($accountId, $amount)
