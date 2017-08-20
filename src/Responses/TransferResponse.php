@@ -2,6 +2,7 @@
 
 namespace Mateusjatenee\Iugu\Responses;
 
+use Illuminate\Support\Collection;
 use Mateusjatenee\Iugu\Responses\BaseResponse;
 
 class TransferResponse extends BaseResponse
@@ -34,5 +35,19 @@ class TransferResponse extends BaseResponse
     public function getSender()
     {
         return $this->sender;
+    }
+
+    public static function collection($data)
+    {
+        $data = $data->json();
+
+        return [
+            'sent' => (new Collection($data['sent']))->map(function ($item) {
+                return new static($item);
+            }),
+            'received' => (new Collection($data['received']))->map(function ($item) {
+                return new static($item);
+            }),
+        ];
     }
 }

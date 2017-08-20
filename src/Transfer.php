@@ -21,7 +21,7 @@ class Transfer extends Resource
             $this->getEndpoint('transfers'), $this->buildTransferData($accountId, $amount)
         );
 
-        return new TransferResponse($response->json());
+        return new TransferResponse($response);
     }
 
     public function find($id)
@@ -30,7 +30,7 @@ class Transfer extends Resource
             $this->getEndpoint('transfers') . '/' . $id
         );
 
-        return new TransferResponse($response->json());
+        return new TransferResponse($response);
     }
 
     public function all($token = null)
@@ -43,16 +43,9 @@ class Transfer extends Resource
             $this->getEndpoint('transfers')
         );
 
-        $data = $response->json();
+        $data = $response;
 
-        return [
-            'sent' => (new Collection($data['sent']))->map(function ($item) {
-                return new TransferResponse($item);
-            }),
-            'received' => (new Collection($data['received']))->map(function ($item) {
-                return new TransferResponse($item);
-            }),
-        ];
+        return TransferResponse::collection($data);
     }
 
     protected function buildTransferData($accountId, $amount)
