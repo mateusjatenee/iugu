@@ -2,18 +2,10 @@
 
 namespace Mateusjatenee\Iugu\Responses;
 
-class TransferResponse
+use Mateusjatenee\Iugu\Responses\BaseResponse;
+
+class TransferResponse extends BaseResponse
 {
-    public function __construct(array $data)
-    {
-        $this->data = $data;
-    }
-
-    public function __get($property)
-    {
-        return $this->data[$property] ?? null;
-    }
-
     public function getId()
     {
         return $this->id;

@@ -2,18 +2,10 @@
 
 namespace Mateusjatenee\Iugu\Responses;
 
-class TokenResponse
+use Mateusjatenee\Iugu\Responses\BaseResponse;
+
+class TokenResponse extends BaseResponse
 {
-    public function __construct(array $data)
-    {
-        $this->data = $data;
-    }
-
-    public function __get($property)
-    {
-        return $this->data[$property] ?? null;
-    }
-
     public function getToken()
     {
         return $this->id;
