@@ -2,18 +2,10 @@
 
 namespace Mateusjatenee\Iugu\Responses;
 
-class ChargeResponse
+use Mateusjatenee\Iugu\Responses\BaseResponse;
+
+class ChargeResponse extends BaseResponse
 {
-    public function __construct(array $data)
-    {
-        $this->data = $data;
-    }
-
-    public function __get($property)
-    {
-        return $this->data[$property] ?? null;
-    }
-
     public function getMessage()
     {
         return $this->message;
