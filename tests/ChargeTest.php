@@ -2,17 +2,15 @@
 
 namespace Mateusjatenee\Iugu\Tests;
 
-use GuzzleHttp\Psr7\Response;
 use Mateusjatenee\Iugu\Iugu;
 use Mateusjatenee\Iugu\Tests\TestCase;
-use Zttp\ZttpResponse;
 
 class ChargeTest extends TestCase
 {
     /** @test */
     public function it_generates_a_token()
     {
-        $stub = $this->getStub('responses/token_create_response.json');
+        $stub = $this->getStub('token_create_response.json');
 
         $url = 'https://api.iugu.com/v1/payment_token';
 
@@ -28,13 +26,6 @@ class ChargeTest extends TestCase
             ],
         ];
 
-        $this->client->shouldReceive('withBasicAuth')->with('foo', '')->once()
-            ->andReturnSelf()
-            ->shouldReceive('post')->with($url, ['account_id' => 123] + $data)
-            ->andReturn(new ZttpResponse(
-                \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
-            ));
-
         $this->iugu->setToken('foo');
 
         $response = $this->iugu->charge()->generateToken(123, $data);
@@ -46,7 +37,7 @@ class ChargeTest extends TestCase
     /** @test */
     public function it_charges_someone()
     {
-        $stub = $this->getStub('responses/charge.json');
+        $stub = $this->getStub('charge.json');
 
         $url = 'https://api.iugu.com/v1/charge';
 
@@ -61,13 +52,6 @@ class ChargeTest extends TestCase
                 ],
             ],
         ];
-
-        $this->client->shouldReceive('withBasicAuth')->with('foo', '')->once()
-            ->andReturnSelf()
-            ->shouldReceive('post')->with($url, $data)
-            ->andReturn(new ZttpResponse(
-                \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
-            ));
 
         $response = $this->iugu->charge($data);
 

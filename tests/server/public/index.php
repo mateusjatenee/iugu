@@ -16,55 +16,66 @@ function build_response($request)
     ], $request->header('Z-Status', 200));
 }
 
+function stub($stub)
+{
+    return json_decode(file_get_contents(
+        __DIR__ . '/stubs/' . $stub
+    ), true);
+}
+
+function is_bar_user($request)
+{
+    $headers = $request->header();
+
+    if (isset($headers['php-auth-user'])) {
+        return $headers['php-auth-user'][0] == 'bar';
+    }
+
+    return false;
+}
+
 $app->get('/get', function () {
     return build_response(app('request'));
 });
 
-$app->post('/post', function () {
+$app->get('auth', function () {
     return build_response(app('request'));
 });
 
-$app->put('/put', function () {
-    return build_response(app('request'));
+$app->post('payment_token', function () {
+    return response()->json(
+        stub('token_create_response.json')
+    );
 });
 
-$app->patch('/patch', function () {
-    return build_response(app('request'));
+$app->post('charge', function () {
+    return response()->json(
+        stub('charge.json')
+    );
 });
 
-$app->delete('/delete', function () {
-    return build_response(app('request'));
+$app->get('transfers/{id}', function ($id) {
+    return response()->json(
+        stub($id . '_transfer_response.json')
+    );
 });
 
-$app->get('/redirect', function () {
-    return redirect('redirected');
+$app->get('transfers', function () {
+    if (is_bar_user(app('request'))) {
+        return response()->json(
+            stub('all_transfers_response_other_account.json')
+        );
+    }
+
+    return response()->json(
+        stub('all_transfers_response.json')
+    );
 });
 
-$app->get('/redirected', function () {
-    return "Redirected!";
-});
-
-$app->get('/simple-response', function () {
-    return "A simple string response";
-});
-
-$app->get('/basic-auth', function () {
-    $headers = [
-        (bool) preg_match('/Basic\s[a-zA-Z0-9]+/', app('request')->header('Authorization')),
-        app('request')->header('php-auth-user') === 'zttp',
-        app('request')->header('php-auth-pw') === 'secret',
-    ];
-
-    return (count(array_unique($headers)) === 1) ? response(null, 200) : response(null, 401);
-});
-
-$app->post('/multi-part', function () {
-    return response()->json([
-        'body_content' => app('request')->only(['foo', 'baz']),
-        'has_file' => app('request')->hasFile('test-file'),
-        'file_content' => file_get_contents($_FILES['test-file']['tmp_name']),
-        'headers' => app('request')->header(),
-    ], 200);
+$app->post('transfers', function () {
+    return response()->json(
+        stub('transfer_response.json')
+    );
 });
 
 $app->run();

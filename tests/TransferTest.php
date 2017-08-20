@@ -2,19 +2,17 @@
 
 namespace Mateusjatenee\Iugu\Tests;
 
-use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Collection;
 use Mateusjatenee\Iugu\Iugu;
 use Mateusjatenee\Iugu\Responses\TransferResponse;
 use Mateusjatenee\Iugu\Tests\TestCase;
-use Zttp\ZttpResponse;
 
 class TransferTest extends TestCase
 {
     /** @test */
     public function it_transfers_money_to_someone()
     {
-        $stub = $this->getStub('responses/transfer_response.json');
+        $stub = $this->getStub('transfer_response.json');
 
         $url = 'https://api.iugu.com/v1/transfers';
 
@@ -22,13 +20,6 @@ class TransferTest extends TestCase
             'account_id' => 123,
             'amount_cents' => 10000,
         ];
-
-        $this->client->shouldReceive('withBasicAuth')->with('foo', '')->once()
-            ->andReturnSelf()
-            ->shouldReceive('post')
-            ->andReturn(new ZttpResponse(
-                \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
-            ));
 
         $this->iugu->setToken('foo');
 
@@ -44,16 +35,9 @@ class TransferTest extends TestCase
     /** @test */
     public function it_finds_a_transference()
     {
-        $stub = $this->getStub('responses/transfer_response.json');
+        $stub = $this->getStub('abc123_transfer_response.json');
 
         $url = 'https://api.iugu.com/v1/transfers/abc123';
-
-        $this->client->shouldReceive('withBasicAuth')->with('foo', '')->once()
-            ->andReturnSelf()
-            ->shouldReceive('get')->with($url)
-            ->andReturn(new ZttpResponse(
-                \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
-            ));
 
         $this->iugu->setToken('foo');
 
@@ -69,16 +53,9 @@ class TransferTest extends TestCase
     /** @test */
     public function it_gets_all_transferences_of_an_account()
     {
-        $stub = $this->getStub('responses/all_transfers_response.json');
+        $stub = $this->getStub('all_transfers_response.json');
 
         $url = 'https://api.iugu.com/v1/transfers';
-
-        $this->client->shouldReceive('withBasicAuth')->with('foo', '')->once()
-            ->andReturnSelf()
-            ->shouldReceive('get')
-            ->andReturn(new ZttpResponse(
-                \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
-            ));
 
         $this->iugu->setToken('foo');
 
@@ -118,16 +95,11 @@ class TransferTest extends TestCase
     /** @test */
     public function it_gets_transfers_for_another_account()
     {
-        $stub = $this->getStub('responses/all_transfers_response_other_account.json');
+        $stub = $this->getStub('all_transfers_response_other_account.json');
 
         $url = 'https://api.iugu.com/v1/transfers';
 
-        $this->client->shouldReceive('withBasicAuth')->with('bar', '')->once()
-            ->andReturnSelf()
-            ->shouldReceive('get')
-            ->andReturn(new ZttpResponse(
-                \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
-            ));
+        $this->iugu->setToken('foo');
 
         $transfer = $this->iugu->transfers()->all('bar');
 

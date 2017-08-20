@@ -18,15 +18,10 @@ class TestCase extends BaseTestCase
         $this->iugu = new Iugu(new PendingZttpRequest);
     }
 
-    protected function getMockedClient()
-    {
-        return \Mockery::mock(new PendingZttpRequest);
-    }
-
     public function getStub($stub)
     {
         return json_decode(file_get_contents(
-            __DIR__ . '/stubs/' . $stub
+            __DIR__ . '/server/public/stubs/' . $stub
         ), true);
     }
 

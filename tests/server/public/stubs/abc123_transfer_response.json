@@ -1,0 +1,14 @@
+{
+    "id": "1234565F6F06412345ED425581234567",
+    "created_at": "2013-11-19T11:24:29-02:00",
+    "amount_cents": "2000",
+    "amount_localized": "R$ 20,00",
+    "receiver": {
+      "id": "77C2565F6F064A26ABED4255894224F0",
+      "name": "Nome da Conta" 
+    },
+    "custom_variables": [{
+        "name": "nome_da_variavel",
+        "value": "valor_da_variavel"
+    }]
+}

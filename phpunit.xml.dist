@@ -16,6 +16,7 @@
     </testsuites>
     <php>
         <env name="TEST_SERVER_PORT" value="9000"/>
+        <env name="IUGU_TESTING" value="true"/>
     </php>
     <filter>
         <whitelist>
