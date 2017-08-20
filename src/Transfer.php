@@ -24,8 +24,12 @@ class Transfer extends Resource
         return new TransferResponse($response->json());
     }
 
-    public function all()
+    public function all($token = null)
     {
+        if ($token) {
+            $this->iugu->setToken($token);
+        }
+
         $response = $this->iugu->client->get(
             $this->getEndpoint('transfers')
         );

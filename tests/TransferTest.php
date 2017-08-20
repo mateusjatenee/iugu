@@ -90,4 +90,51 @@ class TransferTest extends TestCase
         $this->assertEquals($stub['received'][0]['sender'], $received->getSender());
     }
 
+    /** @test */
+    public function it_gets_transfers_for_another_account()
+    {
+        $stub = $this->getStub('responses/all_transfers_response_other_account.json');
+
+        $url = 'https://api.iugu.com/v1/transfers';
+
+        $this->client->shouldReceive('withBasicAuth')->with('bar', '')->once()
+            ->andReturnSelf()
+            ->shouldReceive('get')
+            ->andReturn(new ZttpResponse(
+                \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
+            ));
+
+        $transfer = $this->iugu->transfers()->all('bar');
+
+        $sent = $transfer['sent'];
+        $received = $transfer['received'];
+
+        $this->assertInstanceOf(Collection::class, $sent);
+        $this->assertInstanceOf(Collection::class, $received);
+
+        foreach ($sent as $item) {
+            $this->assertInstanceOf(TransferResponse::class, $item);
+        }
+
+        foreach ($received as $item) {
+            $this->assertInstanceOf(TransferResponse::class, $item);
+        }
+
+        $sent = $sent->first();
+
+        $this->assertEquals($stub['sent'][0]['id'], $sent->getId());
+        $this->assertEquals($stub['sent'][0]['created_at'], $sent->getCreatedAt());
+        $this->assertEquals($stub['sent'][0]['amount_cents'], $sent->getAmountInCents());
+        $this->assertEquals($stub['sent'][0]['amount_localized'], $sent->getLocalizedAmount());
+        $this->assertEquals($stub['sent'][0]['receiver'], $sent->getReceiver());
+
+        $received = $received->first();
+
+        $this->assertEquals($stub['received'][0]['id'], $received->getId());
+        $this->assertEquals($stub['received'][0]['created_at'], $received->getCreatedAt());
+        $this->assertEquals($stub['received'][0]['amount_cents'], $received->getAmountInCents());
+        $this->assertEquals($stub['received'][0]['amount_localized'], $received->getLocalizedAmount());
+        $this->assertEquals($stub['received'][0]['sender'], $received->getSender());
+    }
+
 }
