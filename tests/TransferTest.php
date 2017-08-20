@@ -42,6 +42,31 @@ class TransferTest extends TestCase
     }
 
     /** @test */
+    public function it_finds_a_transference()
+    {
+        $stub = $this->getStub('responses/transfer_response.json');
+
+        $url = 'https://api.iugu.com/v1/transfers/abc123';
+
+        $this->client->shouldReceive('withBasicAuth')->with('foo', '')->once()
+            ->andReturnSelf()
+            ->shouldReceive('get')->with($url)
+            ->andReturn(new ZttpResponse(
+                \Mockery::mock(new Response)->shouldReceive('getBody')->andReturn(json_encode($stub))->getMock()
+            ));
+
+        $this->iugu->setToken('foo');
+
+        $transfer = $this->iugu->transfers()->find('abc123');
+
+        $this->assertEquals($stub['id'], $transfer->getId());
+        $this->assertEquals($stub['created_at'], $transfer->getCreatedAt());
+        $this->assertEquals($stub['amount_cents'], $transfer->getAmountInCents());
+        $this->assertEquals($stub['amount_localized'], $transfer->getLocalizedAmount());
+        $this->assertEquals($stub['receiver'], $transfer->getReceiver());
+    }
+
+    /** @test */
     public function it_gets_all_transferences_of_an_account()
     {
         $stub = $this->getStub('responses/all_transfers_response.json');
