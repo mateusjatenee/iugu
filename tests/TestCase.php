@@ -8,11 +8,14 @@ use Zttp\PendingZttpRequest;
 
 class TestCase extends BaseTestCase
 {
+    public static function setUpBeforeClass()
+    {
+        TestServer::start();
+    }
+
     public function setUp()
     {
-        parent::setUp();
-        $this->client = $this->getMockedClient();
-        $this->iugu = new Iugu($this->client);
+        $this->iugu = new Iugu(new PendingZttpRequest);
     }
 
     protected function getMockedClient()
@@ -25,5 +28,13 @@ class TestCase extends BaseTestCase
         return json_decode(file_get_contents(
             __DIR__ . '/stubs/' . $stub
         ), true);
+    }
+
+    public function url($url)
+    {
+        return vsprintf('%s/%s', [
+            'http://localhost:' . getenv('TEST_SERVER_PORT'),
+            ltrim($url, '/'),
+        ]);
     }
 }
