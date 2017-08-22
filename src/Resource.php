@@ -6,21 +6,23 @@ use Illuminate\Support\Str;
 
 class Resource
 {
+    protected $endpoints = [
+        'create_token' => 'https://api.iugu.com/v1/payment_token',
+        'direct_charge' => 'https://api.iugu.com/v1/charge',
+        'transfers' => 'https://api.iugu.com/v1/transfers/{id?}',
+        'marketplace.create_account' => 'https://api.iugu.com/v1/marketplace/create_account',
+        'accounts' => 'https://api.iugu.com/v1/accounts/{id?}',
+        'accounts.verify' => 'https://api.iugu.com/v1/accounts/{id}/request_verification',
+        'accounts.withdraw' => 'https://api.iugu.com/v1/accounts/{id}/request_withdraw',
+    ];
+
     public function getEndpoints()
     {
         if (getenv('IUGU_TESTING')) {
             return $this->testingEndpoints();
         }
 
-        return [
-            'create_token' => 'https://api.iugu.com/v1/payment_token',
-            'direct_charge' => 'https://api.iugu.com/v1/charge',
-            'transfers' => 'https://api.iugu.com/v1/transfers/{id?}',
-            'marketplace.create_account' => 'https://api.iugu.com/v1/marketplace/create_account',
-            'accounts' => 'https://api.iugu.com/v1/accounts/{id?}',
-            'accounts.verify' => 'https://api.iugu.com/v1/accounts/{id}/request_verification',
-            'accounts.withdraw' => 'https://api.iugu.com/v1/accounts/{id}/request_withdraw',
-        ];
+        return $this->endpoints;
     }
 
     public function getEndpoint($endpoint, $params = [])
@@ -38,16 +40,9 @@ class Resource
 
     protected function testingEndpoints()
     {
-        return [
-            'create_token' => $this->url('payment_token'),
-            'direct_charge' => $this->url('charge'),
-            'transfers' => $this->url('/transfers/{id?}'),
-            'marketplace.create_account' => $this->url('/marketplace/create_account'),
-            'accounts' => $this->url('/accounts/{id?}'),
-            'accounts.verify' => $this->url('/accounts/{id}/request_verification'),
-            'accounts.withdraw' => $this->url('/accounts/{id}/request_withdraw'),
-
-        ];
+        return array_map(function ($endpoint) {
+            return $this->url(Str::replaceFirst('https://api.iugu.com/v1/', '', $endpoint));
+        }, $this->endpoints);
     }
 
     public function url($url)
