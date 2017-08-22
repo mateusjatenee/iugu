@@ -10,11 +10,21 @@ class Transfer extends Resource
 {
     private $iugu;
 
+    /**
+     * @param \Mateusjatenee\Iugu\Iugu $iugu
+     */
     public function __construct($iugu)
     {
         $this->iugu = $iugu;
     }
 
+    /**
+     * Transfers a certain amount to a given account.
+     *
+     * @param string $accountId
+     * @param string $amount
+     * @return \Mateusjatenee\Iugu\Responses\TransferResponse
+     */
     public function transferTo($accountId, $amount)
     {
         $response = $this->iugu->client->post(
@@ -24,6 +34,12 @@ class Transfer extends Resource
         return new TransferResponse($response);
     }
 
+    /**
+     * Finds a transfer by a given id.
+     *
+     * @param string $id
+     * @return \Mateusjatenee\Iugu\Responses\TransferResponse
+     */
     public function find($id)
     {
         $response = $this->iugu->client->get(
@@ -33,6 +49,12 @@ class Transfer extends Resource
         return new TransferResponse($response);
     }
 
+    /**
+     * Gets all the transfers.
+     *
+     * @param string|null $token
+     * @return \Illuminate\Support\Collection
+     */
     public function all($token = null)
     {
         if ($token) {
@@ -43,11 +65,16 @@ class Transfer extends Resource
             $this->getEndpoint('transfers')
         );
 
-        $data = $response;
-
-        return TransferResponse::collection($data);
+        return TransferResponse::collection($response);
     }
 
+    /**
+     * Builds the transfer array.
+     *
+     * @param string $accountId
+     * @param string $amount
+     * @return array
+     */
     protected function buildTransferData($accountId, $amount)
     {
         return [
