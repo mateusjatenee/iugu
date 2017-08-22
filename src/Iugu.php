@@ -28,7 +28,7 @@ class Iugu
     public function __construct($client, $token = null)
     {
         ZttpResponse::macro('to', function ($class) {
-            if ($this->isOk()) {
+            if (!$this->isOk()) {
                 return new FailedRequest($this);
             }
 
