@@ -1,0 +1,26 @@
+{
+    "id": "EC696038CCCE456893568C886AEBFD4F",
+    "data": {
+        "price_range": "Subconta",
+        "physical_products": "false",
+        "business_type": "Serviços de Limpeza",
+        "person_type": "Pessoa Física",
+        "automatic_transfer": "true",
+        "cpf": "123.123.123-12",
+        "name": "Nome da Pessoa",
+        "address": "Av. Paulista 320 cj 10",
+        "cep": "01419-000",
+        "city": "São Paulo",
+        "state": "São Paulo",
+        "telephone": "11-91231-1234",
+        "bank": "Itaú",
+        "bank_ag": "1234",
+        "account_type": "Corrente",
+        "bank_cc": "11231-2",
+        "document_id": 1,
+        "document_cpf": 2,
+        "document_activity": 3
+    },
+    "account_id": "49196DF60BC64B6EB42DEC9C5D81C2CC",
+    "created_at": "2014-03-14T11:12:18-03:00"
+}

@@ -26,4 +26,26 @@ class SubAccount extends Resource
         return new SubAccountResponse($response);
     }
 
+    public function find($id)
+    {
+        $response = $this->iugu->client->get(
+            $this->getEndpoint('accounts') . '/' . $id
+        );
+
+        return new SubAccountResponse($response);
+    }
+
+    public function verify($id, $data)
+    {
+        if ($id instanceof SubAccountResponse) {
+            $id = $id->id;
+        }
+
+        $response = $this->iugu->client->post(
+            $this->getEndpoint('accounts.verify', ['id' => $id]), $data
+        );
+
+        return new SubAccountResponse($response);
+    }
+
 }

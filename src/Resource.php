@@ -15,12 +15,16 @@ class Resource
             'direct_charge' => 'https://api.iugu.com/v1/charge',
             'transfers' => 'https://api.iugu.com/v1/transfers',
             'marketplace.create_account' => 'https://api.iugu.com/v1/marketplace/create_account',
+            'accounts' => 'https://api.iugu.com/v1/accounts',
+            'accounts.verify' => 'https://api.iugu.com/v1/accounts/{id}/request_verification',
         ];
     }
 
-    public function getEndpoint($endpoint)
+    public function getEndpoint($endpoint, $params = [])
     {
-        return $this->getEndpoints()[$endpoint];
+        $endpoint = $this->getEndpoints()[$endpoint];
+
+        return $this->setParameters($endpoint, $params);
     }
 
     protected function testingEndpoints()
@@ -30,6 +34,9 @@ class Resource
             'direct_charge' => $this->url('/charge'),
             'transfers' => $this->url('/transfers'),
             'marketplace.create_account' => $this->url('/marketplace/create_account'),
+            'accounts' => $this->url('/accounts'),
+            'accounts.verify' => $this->url('/accounts/{id}/request_verification'),
+
         ];
     }
 
@@ -39,5 +46,14 @@ class Resource
             'http://localhost:' . getenv('TEST_SERVER_PORT'),
             ltrim($url, '/'),
         ]);
+    }
+
+    protected function setParameters($endpoint, $params)
+    {
+        foreach ($params as $key => $param) {
+            $endpoint = str_replace('{' . $key . '}', $param, $endpoint);
+        }
+
+        return $endpoint;
     }
 }

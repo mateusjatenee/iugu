@@ -30,4 +30,60 @@ class SubAccountTest extends TestCase
         $this->assertEquals($data, $subAccount->requestData);
     }
 
+    /** @test */
+    public function it_finds_a_sub_account()
+    {
+        $stub = $this->getStub('marketplace_123_account.json');
+
+        $this->iugu->setToken('foo');
+
+        $subAccount = $this->iugu->subAccounts()->find(456);
+
+        $this->assertResponseIsOk($subAccount);
+        $this->assertEquals($stub['id'], $subAccount->id);
+        $this->assertEquals($stub['name'], $subAccount->name);
+        $this->assertEquals($stub['created_at'], $subAccount->created_at);
+
+        $this->assertEquals(456, $subAccount->params['id']);
+    }
+
+    /** @test */
+    public function it_verifies_a_sub_account()
+    {
+        $stub = $this->getStub('marketplace_verify_account.json');
+
+        $this->iugu->setToken('foo');
+
+        $subAccount = $this->iugu->subAccounts()->find(456);
+
+        $data = [
+            'data' => [
+                'price_range' => 'Até R$ 100,00',
+                'physical_products' => false,
+                'business_type' => 'Internet',
+                'person_type' => 'Pessoa Física',
+                'automatic_transfer' => false,
+                'cpf' => '000.000.000.-25',
+                'name' => 'Mateus Guimarães',
+                'address' => 'Rua Arandu, 205',
+                'cep' => '01416001',
+                'city' => 'São Paulo',
+                'state' => 'São Paulo',
+                'telephone' => '119980339811',
+                'bank' => 'Itaú',
+                'bank_ag' => '4444',
+                'bank_cc' => '409213',
+                'account_type' => 'Corrente',
+            ],
+        ];
+
+        $verification = $this->iugu->subAccounts()->verify($subAccount, $data);
+
+        $this->assertResponseIsOk($verification);
+        $this->assertEquals($stub['account_id'], $verification->account_id);
+        $this->assertEquals($data, $verification->requestData);
+
+        $this->assertEquals($subAccount->id, $verification->params['id']);
+    }
+
 }

@@ -28,9 +28,11 @@ function json($data)
     return response()->json($data);
 }
 
-function json_stub($stub)
+function json_stub($stub, $additional = [])
 {
-    $stub = stub($stub) + ['requestData' => app('request')->all()];
+    $stub = stub($stub) + [
+        'requestData' => app('request')->all(),
+    ] + $additional;
 
     return json($stub);
 }
@@ -79,8 +81,23 @@ $app->post('transfers', function () {
 });
 
 $app->post('marketplace/create_account', function () {
-
     return json_stub('marketplace_create_account.json');
+});
+
+$app->get('accounts/{id}', function ($id) {
+    return json_stub('marketplace_123_account.json', [
+        'params' => [
+            'id' => $id,
+        ],
+    ]);
+});
+
+$app->post('accounts/{id}/request_verification', function ($id) {
+    return json_stub('marketplace_verify_account.json', [
+        'params' => [
+            'id' => $id,
+        ],
+    ]);
 });
 
 $app->run();
