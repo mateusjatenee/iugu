@@ -3,7 +3,6 @@
 namespace Mateusjatenee\Iugu\Responses;
 
 use Mateusjatenee\Iugu\Iugu;
-use Zttp\PendingZttpRequest;
 use Zttp\ZttpResponse;
 
 class BaseResponse
@@ -26,7 +25,7 @@ class BaseResponse
 
     public function getIugu()
     {
-        return new Iugu(new PendingZttpRequest);
+        return Iugu::getInstance();
     }
 
     protected function getResponse($data, $response)

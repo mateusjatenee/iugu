@@ -32,6 +32,7 @@ function json_stub($stub, $additional = [])
 {
     $stub = stub($stub) + [
         'requestData' => app('request')->all(),
+        'headers' => app('request')->header(),
     ] + $additional;
 
     return json($stub);

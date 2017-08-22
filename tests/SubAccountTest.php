@@ -103,6 +103,7 @@ class SubAccountTest extends TestCase
         $this->assertEquals(500.0, $withdraw->requestData['amount']);
 
         $this->assertEquals($subAccount->id, $withdraw->params['id']);
+        $this->assertEquals('foo', $withdraw->headers['php-auth-user'][0]);
     }
 
     protected function getVerificationData()
