@@ -4,6 +4,7 @@ namespace Mateusjatenee\Iugu\Tests\Responses;
 
 use Mateusjatenee\Iugu\FailedRequest;
 use Mateusjatenee\Iugu\Iugu;
+use Mateusjatenee\Iugu\Responses\ChargeResponse;
 use Mateusjatenee\Iugu\Tests\TestCase;
 
 class BaseResponseTest extends TestCase
@@ -35,6 +36,23 @@ class BaseResponseTest extends TestCase
         $this->assertInstanceOf(FailedRequest::class, $failedRequest);
         $this->assertFalse($failedRequest->isOk());
         $this->assertEquals('Unauthorized', $failedRequest->getErrors()
+        );
+    }
+
+    /** @test */
+    public function it_automatically_returns_a_failed_response()
+    {
+        $response = $this->iugu->client->get($this->url('422'));
+
+        $response = $response->to(ChargeResponse::class);
+
+        $this->assertInstanceOf(FailedRequest::class, $response);
+        $this->assertFalse($response->isOk());
+        $this->assertEquals([
+            'due_date' => [
+                'should not be in the past',
+            ],
+        ], $response->getErrors()
         );
     }
 
