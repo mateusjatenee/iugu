@@ -3,7 +3,6 @@
 namespace Mateusjatenee\Iugu\Tests;
 
 use Mateusjatenee\Iugu\Iugu;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Zttp\PendingZttpRequest;
 
@@ -36,6 +35,6 @@ class TestCase extends BaseTestCase
 
     public function assertResponseIsOk($response)
     {
-        Assert::assertTrue($response->isOk());
+        $this->assertTrue($response->isOk());
     }
 }
