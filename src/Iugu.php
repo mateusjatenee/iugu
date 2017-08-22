@@ -4,6 +4,7 @@ namespace Mateusjatenee\Iugu;
 
 use Mateusjatenee\Iugu\Charge;
 use Mateusjatenee\Iugu\SubAccount;
+use Zttp\ZttpResponse;
 
 class Iugu
 {
@@ -25,6 +26,10 @@ class Iugu
      */
     public function __construct($client, $token = null)
     {
+        ZttpResponse::macro('to', function ($class) {
+            return new $class($this);
+        });
+
         $this->client = $client;
         $this->token = $token;
         $this->setAuth($token);

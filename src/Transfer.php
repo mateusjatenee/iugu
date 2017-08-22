@@ -31,7 +31,7 @@ class Transfer extends Resource
             $this->getEndpoint('transfers'), $this->buildTransferData($accountId, $amount)
         );
 
-        return new TransferResponse($response);
+        return $response->to(TransferResponse::class);
     }
 
     /**
@@ -46,7 +46,7 @@ class Transfer extends Resource
             $this->getEndpoint('transfers', ['id' => $id])
         );
 
-        return new TransferResponse($response);
+        return $response->to(TransferResponse::class);
     }
 
     /**

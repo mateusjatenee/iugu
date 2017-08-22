@@ -23,7 +23,7 @@ class SubAccount extends Resource
             $this->getEndpoint('marketplace.create_account'), $data
         );
 
-        return new SubAccountResponse($response);
+        return $response->to(SubAccountResponse::class);
     }
 
     public function find($id)
@@ -32,7 +32,7 @@ class SubAccount extends Resource
             $this->getEndpoint('accounts', ['id' => $id])
         );
 
-        return new SubAccountResponse($response);
+        return $response->to(SubAccountResponse::class);
     }
 
     public function verify($id, $data)
@@ -45,7 +45,7 @@ class SubAccount extends Resource
             $this->getEndpoint('accounts.verify', ['id' => $id]), $data
         );
 
-        return new SubAccountResponse($response);
+        return $response->to(SubAccountResponse::class);
     }
 
     public function requestWithdraw($id, $amount)
@@ -58,7 +58,7 @@ class SubAccount extends Resource
             $this->getEndpoint('accounts.withdraw', ['id' => $id]), ['amount' => $amount]
         );
 
-        return new SubAccountResponse($response);
+        return $response->to(SubAccountResponse::class);
     }
 
 }
