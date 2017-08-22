@@ -48,6 +48,22 @@ function is_bar_user($request)
     return false;
 }
 
+$app->get('422', function () {
+    return response()->json([
+        'errors' => [
+            'due_date' => [
+                'should not be in the past',
+            ],
+        ],
+    ], 422);
+});
+
+$app->get('401', function () {
+    return response()->json([
+        'errors' => 'Unauthorized',
+    ], 401);
+});
+
 $app->get('/get', function () {
     return build_response(app('request'));
 });

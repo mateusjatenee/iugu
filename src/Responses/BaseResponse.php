@@ -37,4 +37,9 @@ class BaseResponse
 
         return $data instanceof ZttpResponse ? $data : null;
     }
+
+    protected function isFailedRequest($data)
+    {
+        return $data instanceof ZttpResponse && !$data->isOk();
+    }
 }
