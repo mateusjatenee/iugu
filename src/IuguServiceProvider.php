@@ -10,8 +10,10 @@ class IuguServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('iugu', function ($app) {
-            return new Iugu(new PendingZttpRequest);
+        $apiToken = config('services.iugu.api_token');
+
+        $this->app->singleton('iugu', function ($app) use ($apiToken) {
+            return new Iugu(new PendingZttpRequest, $apiToken);
         });
     }
 }
