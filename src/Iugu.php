@@ -3,6 +3,7 @@
 namespace Mateusjatenee\Iugu;
 
 use Mateusjatenee\Iugu\Charge;
+use Mateusjatenee\Iugu\FailedRequest;
 use Mateusjatenee\Iugu\SubAccount;
 use Zttp\ZttpResponse;
 
@@ -27,6 +28,10 @@ class Iugu
     public function __construct($client, $token = null)
     {
         ZttpResponse::macro('to', function ($class) {
+            if ($this->isOk()) {
+                return new FailedRequest($this);
+            }
+
             return new $class($this);
         });
 
