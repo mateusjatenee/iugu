@@ -39,8 +39,8 @@ class Resource
     protected function testingEndpoints()
     {
         return [
-            'create_token' => $this->url('/payment_token'),
-            'direct_charge' => $this->url('/charge'),
+            'create_token' => $this->url('payment_token'),
+            'direct_charge' => $this->url('charge'),
             'transfers' => $this->url('/transfers/{id?}'),
             'marketplace.create_account' => $this->url('/marketplace/create_account'),
             'accounts' => $this->url('/accounts/{id?}'),
