@@ -43,7 +43,7 @@ class Transfer extends Resource
     public function find($id)
     {
         $response = $this->iugu->client->get(
-            $this->getEndpoint('transfers') . '/' . $id
+            $this->getEndpoint('transfers', ['id' => $id])
         );
 
         return new TransferResponse($response);

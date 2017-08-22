@@ -29,7 +29,7 @@ class SubAccount extends Resource
     public function find($id)
     {
         $response = $this->iugu->client->get(
-            $this->getEndpoint('accounts') . '/' . $id
+            $this->getEndpoint('accounts', ['id' => $id])
         );
 
         return new SubAccountResponse($response);

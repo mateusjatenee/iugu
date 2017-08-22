@@ -2,6 +2,8 @@
 
 namespace Mateusjatenee\Iugu;
 
+use Illuminate\Support\Str;
+
 class Resource
 {
     public function getEndpoints()
@@ -13,9 +15,9 @@ class Resource
         return [
             'create_token' => 'https://api.iugu.com/v1/payment_token',
             'direct_charge' => 'https://api.iugu.com/v1/charge',
-            'transfers' => 'https://api.iugu.com/v1/transfers',
+            'transfers' => 'https://api.iugu.com/v1/transfers/{id?}',
             'marketplace.create_account' => 'https://api.iugu.com/v1/marketplace/create_account',
-            'accounts' => 'https://api.iugu.com/v1/accounts',
+            'accounts' => 'https://api.iugu.com/v1/accounts/{id?}',
             'accounts.verify' => 'https://api.iugu.com/v1/accounts/{id}/request_verification',
             'accounts.withdraw' => 'https://api.iugu.com/v1/accounts/{id}/request_withdraw',
         ];
@@ -23,9 +25,15 @@ class Resource
 
     public function getEndpoint($endpoint, $params = [])
     {
-        $endpoint = $this->getEndpoints()[$endpoint];
+        $endpoint = $this->bindParams(
+            $this->getEndpoints()[$endpoint], $params
+        );
 
-        return $this->setParameters($endpoint, $params);
+        if (Str::endsWith($endpoint, '/')) {
+            $endpoint = Str::replaceLast('/', '', $endpoint);
+        }
+
+        return $endpoint;
     }
 
     protected function testingEndpoints()
@@ -33,9 +41,9 @@ class Resource
         return [
             'create_token' => $this->url('/payment_token'),
             'direct_charge' => $this->url('/charge'),
-            'transfers' => $this->url('/transfers'),
+            'transfers' => $this->url('/transfers/{id?}'),
             'marketplace.create_account' => $this->url('/marketplace/create_account'),
-            'accounts' => $this->url('/accounts'),
+            'accounts' => $this->url('/accounts/{id?}'),
             'accounts.verify' => $this->url('/accounts/{id}/request_verification'),
             'accounts.withdraw' => $this->url('/accounts/{id}/request_withdraw'),
 
@@ -50,12 +58,18 @@ class Resource
         ]);
     }
 
-    protected function setParameters($endpoint, $params)
+    protected function bindParams($endpoint, $params)
     {
         foreach ($params as $key => $param) {
-            $endpoint = str_replace('{' . $key . '}', $param, $endpoint);
+            $endpoint = Str::replaceFirst('{' . $key . '}', $param, $endpoint);
+            $endpoint = Str::replaceFirst('{' . $key . '?}', $param, $endpoint);
         }
 
-        return $endpoint;
+        return $this->removeOptionalParams($endpoint);
+    }
+
+    protected function removeOptionalParams($endpoint)
+    {
+        return preg_replace('/{[\s\S]+?\?}/', '', $endpoint);
     }
 }
