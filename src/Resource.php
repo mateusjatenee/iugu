@@ -17,6 +17,7 @@ class Resource
             'marketplace.create_account' => 'https://api.iugu.com/v1/marketplace/create_account',
             'accounts' => 'https://api.iugu.com/v1/accounts',
             'accounts.verify' => 'https://api.iugu.com/v1/accounts/{id}/request_verification',
+            'accounts.withdraw' => 'https://api.iugu.com/v1/accounts/{id}/request_withdraw',
         ];
     }
 
@@ -36,6 +37,7 @@ class Resource
             'marketplace.create_account' => $this->url('/marketplace/create_account'),
             'accounts' => $this->url('/accounts'),
             'accounts.verify' => $this->url('/accounts/{id}/request_verification'),
+            'accounts.withdraw' => $this->url('/accounts/{id}/request_withdraw'),
 
         ];
     }

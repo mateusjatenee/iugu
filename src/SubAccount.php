@@ -48,4 +48,17 @@ class SubAccount extends Resource
         return new SubAccountResponse($response);
     }
 
+    public function requestWithdraw($id, $amount)
+    {
+        if ($id instanceof SubAccountResponse) {
+            $id = $id->id;
+        }
+
+        $response = $this->iugu->client->post(
+            $this->getEndpoint('accounts.withdraw', ['id' => $id]), ['amount' => $amount]
+        );
+
+        return new SubAccountResponse($response);
+    }
+
 }

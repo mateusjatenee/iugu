@@ -2,6 +2,8 @@
 
 namespace Mateusjatenee\Iugu\Responses;
 
+use Mateusjatenee\Iugu\Iugu;
+use Zttp\PendingZttpRequest;
 use Zttp\ZttpResponse;
 
 class BaseResponse
@@ -20,6 +22,11 @@ class BaseResponse
     public function isOk()
     {
         return $this->response->isOk();
+    }
+
+    public function getIugu()
+    {
+        return new Iugu(new PendingZttpRequest);
     }
 
     protected function getResponse($data, $response)

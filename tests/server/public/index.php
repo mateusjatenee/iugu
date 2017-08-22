@@ -100,4 +100,12 @@ $app->post('accounts/{id}/request_verification', function ($id) {
     ]);
 });
 
+$app->post('accounts/{id}/request_withdraw', function ($id) {
+    return json_stub('marketplace_account_request_withdraw.json', [
+        'params' => [
+            'id' => $id,
+        ],
+    ]);
+});
+
 $app->run();
