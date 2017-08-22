@@ -1,6 +1,6 @@
 <?php
 
-namespace Mateusjatenee\Iuug\Facades;
+namespace Mateusjatenee\Iugu\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

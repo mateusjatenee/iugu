@@ -3,6 +3,7 @@
 namespace Mateusjatenee\Iugu;
 
 use Mateusjatenee\Iugu\Charge;
+use Mateusjatenee\Iugu\SubAccount;
 
 class Iugu
 {
@@ -52,6 +53,16 @@ class Iugu
     public function transfers()
     {
         return new Transfer($this);
+    }
+
+    public function subAccounts()
+    {
+        return new SubAccount($this);
+    }
+
+    public function marketplace()
+    {
+        return $this->subAccounts();
     }
 
     /**

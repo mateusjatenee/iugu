@@ -17,7 +17,7 @@ class TransferTest extends TestCase
         $url = 'https://api.iugu.com/v1/transfers';
 
         $data = [
-            'account_id' => 123,
+            'receiver_id' => 123,
             'amount_cents' => 10000,
         ];
 
@@ -31,6 +31,8 @@ class TransferTest extends TestCase
         $this->assertEquals($stub['amount_cents'], $transfer->getAmountInCents());
         $this->assertEquals($stub['amount_localized'], $transfer->getLocalizedAmount());
         $this->assertEquals($stub['receiver'], $transfer->getReceiver());
+
+        $this->assertEquals($data, $transfer->requestData);
     }
 
     /** @test */

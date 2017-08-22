@@ -23,6 +23,18 @@ function stub($stub)
     ), true);
 }
 
+function json($data)
+{
+    return response()->json($data);
+}
+
+function json_stub($stub)
+{
+    $stub = stub($stub) + ['requestData' => app('request')->all()];
+
+    return json($stub);
+}
+
 function is_bar_user($request)
 {
     $headers = $request->header();
@@ -43,39 +55,32 @@ $app->get('auth', function () {
 });
 
 $app->post('payment_token', function () {
-    return response()->json(
-        stub('token_create_response.json')
-    );
+    return json_stub('token_create_response.json');
 });
 
 $app->post('charge', function () {
-    return response()->json(
-        stub('charge.json')
-    );
+    return json_stub('charge.json');
 });
 
 $app->get('transfers/{id}', function ($id) {
-    return response()->json(
-        stub($id . '_transfer_response.json')
-    );
+    return json_stub($id . '_transfer_response.json');
 });
 
 $app->get('transfers', function () {
     if (is_bar_user(app('request'))) {
-        return response()->json(
-            stub('all_transfers_response_other_account.json')
-        );
+        return json_stub('all_transfers_response_other_account.json');
     }
 
-    return response()->json(
-        stub('all_transfers_response.json')
-    );
+    return json_stub('all_transfers_response.json');
 });
 
 $app->post('transfers', function () {
-    return response()->json(
-        stub('transfer_response.json')
-    );
+    return json_stub('transfer_response.json');
+});
+
+$app->post('marketplace/create_account', function () {
+
+    return json_stub('marketplace_create_account.json');
 });
 
 $app->run();

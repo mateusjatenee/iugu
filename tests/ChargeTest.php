@@ -33,6 +33,7 @@ class ChargeTest extends TestCase
         $this->assertResponseIsOk($response);
         $this->assertEquals($response->getToken(), $stub['id']);
         $this->assertEquals($response->id, $stub['id']);
+        $this->assertEquals($data + ['account_id' => 123], $response->requestData);
     }
 
     /** @test */
@@ -59,5 +60,6 @@ class ChargeTest extends TestCase
         $this->assertResponseIsOk($response);
         $this->assertEquals($response->getMessage(), $stub['message']);
         $this->assertEquals($response->getInvoiceId(), $stub['invoice_id']);
+        $this->assertEquals($data, $response->requestData);
     }
 }
