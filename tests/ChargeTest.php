@@ -30,6 +30,7 @@ class ChargeTest extends TestCase
 
         $response = $this->iugu->charge()->generateToken(123, $data);
 
+        $this->assertResponseIsOk($response);
         $this->assertEquals($response->getToken(), $stub['id']);
         $this->assertEquals($response->id, $stub['id']);
     }
@@ -55,6 +56,7 @@ class ChargeTest extends TestCase
 
         $response = $this->iugu->charge($data);
 
+        $this->assertResponseIsOk($response);
         $this->assertEquals($response->getMessage(), $stub['message']);
         $this->assertEquals($response->getInvoiceId(), $stub['invoice_id']);
     }

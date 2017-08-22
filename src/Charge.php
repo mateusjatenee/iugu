@@ -27,9 +27,9 @@ class Charge extends Resource
      */
     public function generateToken($accountId, $data)
     {
-        $request = $this->iugu->client->post($this->getEndpoint('create_token'), ['account_id' => $accountId] + $data);
+        $response = $this->iugu->client->post($this->getEndpoint('create_token'), ['account_id' => $accountId] + $data);
 
-        return new TokenResponse($request->json());
+        return new TokenResponse($response);
     }
 
     /**
@@ -40,10 +40,10 @@ class Charge extends Resource
      */
     public function directCharge($data)
     {
-        $request = $this->iugu->client->post(
+        $response = $this->iugu->client->post(
             $this->getEndpoint('direct_charge'), $data
         );
 
-        return new ChargeResponse($request->json());
+        return new ChargeResponse($response);
     }
 }

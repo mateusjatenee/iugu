@@ -37,16 +37,16 @@ class TransferResponse extends BaseResponse
         return $this->sender;
     }
 
-    public static function collection($data)
+    public static function collection($response)
     {
-        $data = $data->json();
+        $data = $response->json();
 
         return [
-            'sent' => (new Collection($data['sent']))->map(function ($item) {
-                return new static($item);
+            'sent' => (new Collection($data['sent']))->map(function ($item) use ($response) {
+                return new static($item, $response);
             }),
-            'received' => (new Collection($data['received']))->map(function ($item) {
-                return new static($item);
+            'received' => (new Collection($data['received']))->map(function ($item) use ($response) {
+                return new static($item, $response);
             }),
         ];
     }

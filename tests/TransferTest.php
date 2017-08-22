@@ -25,6 +25,7 @@ class TransferTest extends TestCase
 
         $transfer = $this->iugu->transfers()->transferTo(123, 10000);
 
+        $this->assertResponseIsOk($transfer);
         $this->assertEquals($stub['id'], $transfer->getId());
         $this->assertEquals($stub['created_at'], $transfer->getCreatedAt());
         $this->assertEquals($stub['amount_cents'], $transfer->getAmountInCents());
@@ -43,6 +44,7 @@ class TransferTest extends TestCase
 
         $transfer = $this->iugu->transfers()->find('abc123');
 
+        $this->assertResponseIsOk($transfer);
         $this->assertEquals($stub['id'], $transfer->getId());
         $this->assertEquals($stub['created_at'], $transfer->getCreatedAt());
         $this->assertEquals($stub['amount_cents'], $transfer->getAmountInCents());
@@ -77,6 +79,7 @@ class TransferTest extends TestCase
 
         $sent = $sent->first();
 
+        $this->assertResponseIsOk($sent);
         $this->assertEquals($stub['sent'][0]['id'], $sent->getId());
         $this->assertEquals($stub['sent'][0]['created_at'], $sent->getCreatedAt());
         $this->assertEquals($stub['sent'][0]['amount_cents'], $sent->getAmountInCents());
@@ -85,6 +88,7 @@ class TransferTest extends TestCase
 
         $received = $received->first();
 
+        $this->assertResponseIsOk($received);
         $this->assertEquals($stub['received'][0]['id'], $received->getId());
         $this->assertEquals($stub['received'][0]['created_at'], $received->getCreatedAt());
         $this->assertEquals($stub['received'][0]['amount_cents'], $received->getAmountInCents());
@@ -119,6 +123,7 @@ class TransferTest extends TestCase
 
         $sent = $sent->first();
 
+        $this->assertResponseIsOk($sent);
         $this->assertEquals($stub['sent'][0]['id'], $sent->getId());
         $this->assertEquals($stub['sent'][0]['created_at'], $sent->getCreatedAt());
         $this->assertEquals($stub['sent'][0]['amount_cents'], $sent->getAmountInCents());
@@ -127,6 +132,7 @@ class TransferTest extends TestCase
 
         $received = $received->first();
 
+        $this->assertResponseIsOk($received);
         $this->assertEquals($stub['received'][0]['id'], $received->getId());
         $this->assertEquals($stub['received'][0]['created_at'], $received->getCreatedAt());
         $this->assertEquals($stub['received'][0]['amount_cents'], $received->getAmountInCents());
