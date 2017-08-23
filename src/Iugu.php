@@ -106,6 +106,11 @@ class Iugu
         return $this->subAccounts();
     }
 
+    public function invoices()
+    {
+        return new Invoice($this);
+    }
+
     /**
      * Gets the HTTP client
      *

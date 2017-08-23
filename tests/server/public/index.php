@@ -125,4 +125,24 @@ $app->post('accounts/{id}/request_withdraw', function ($id) {
     ]);
 });
 
+$app->get('invoices/{id}', function ($id) {
+    return json_stub('find_invoice_response.json', [
+        'params' => [
+            'id' => $id,
+        ],
+    ]);
+});
+
+$app->post('invoices', function () {
+    return json_stub('create_invoice_response.json');
+});
+
+$app->post('invoices/{id}/refund', function ($id) {
+    return json_stub('refund_invoice_response.json', [
+        'params' => [
+            'id' => $id,
+        ],
+    ]);
+});
+
 $app->run();

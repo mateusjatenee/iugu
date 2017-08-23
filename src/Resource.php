@@ -14,6 +14,8 @@ class Resource
         'accounts' => 'https://api.iugu.com/v1/accounts/{id?}',
         'accounts.verify' => 'https://api.iugu.com/v1/accounts/{id}/request_verification',
         'accounts.withdraw' => 'https://api.iugu.com/v1/accounts/{id}/request_withdraw',
+        'invoices' => 'https://api.iugu.com/v1/invoices/{id?}',
+        'invoices.refund' => 'https://api.iugu.com/v1/invoices/{id}/refund',
     ];
 
     public function getEndpoints()
