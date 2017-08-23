@@ -33,7 +33,7 @@ class Iugu
         $this->registerMacros();
         $this->setClient($client);
         $this->setAuth($token);
-        self::setInstance($this);
+        static::setInstance($this);
     }
 
     /**
