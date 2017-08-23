@@ -30,16 +30,8 @@ class Iugu
      */
     public function __construct($client, $token = null)
     {
-        ZttpResponse::macro('to', function ($class) {
-            if (!$this->isOk()) {
-                throw new FailedRequestException($this);
-            }
-
-            return new $class($this);
-        });
-
-        $this->client = $client;
-        $this->token = $token;
+        $this->registerMacros();
+        $this->setClient($client);
         $this->setAuth($token);
         self::setInstance($this);
     }
@@ -127,6 +119,13 @@ class Iugu
         return tap($this)->setAuth($token, '');
     }
 
+    public function setClient($client)
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
     /**
      * Sets the basic auth headers.
      *
@@ -143,7 +142,19 @@ class Iugu
         unset($this->client->options['auth']);
 
         return tap($this, function ($iugu) use ($user, $password) {
+            $iugu->token = $user;
             $iugu->client->withBasicAuth($user, $password);
+        });
+    }
+
+    public function registerMacros()
+    {
+        ZttpResponse::macro('to', function ($class) {
+            if (!$this->isOk()) {
+                throw new FailedRequestException($this);
+            }
+
+            return new $class($this);
         });
     }
 }
