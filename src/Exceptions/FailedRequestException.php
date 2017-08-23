@@ -1,8 +1,8 @@
 <?php
 
-namespace Mateusjatenee\Iugu;
+namespace Mateusjatenee\Iugu\Exceptions;
 
-class FailedRequest
+class FailedRequestException extends \Exception
 {
     private $response;
 

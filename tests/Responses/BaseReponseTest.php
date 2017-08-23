@@ -2,7 +2,7 @@
 
 namespace Mateusjatenee\Iugu\Tests\Responses;
 
-use Mateusjatenee\Iugu\FailedRequest;
+use Mateusjatenee\Iugu\Exceptions\FailedRequestException;
 use Mateusjatenee\Iugu\Iugu;
 use Mateusjatenee\Iugu\Responses\ChargeResponse;
 use Mateusjatenee\Iugu\Tests\TestCase;
@@ -14,15 +14,14 @@ class BaseResponseTest extends TestCase
     {
         $response = $this->iugu->client->get($this->url('422'));
 
-        $failedRequest = new FailedRequest($response);
+        $exception = new FailedRequestException($response);
 
-        $this->assertInstanceOf(FailedRequest::class, $failedRequest);
-        $this->assertFalse($failedRequest->isOk());
+        $this->assertFalse($exception->isOk());
         $this->assertEquals([
             'due_date' => [
                 'should not be in the past',
             ],
-        ], $failedRequest->getErrors()
+        ], $exception->getErrors()
         );
     }
 
@@ -31,12 +30,10 @@ class BaseResponseTest extends TestCase
     {
         $response = $this->iugu->client->get($this->url('401'));
 
-        $failedRequest = new FailedRequest($response);
+        $exception = new FailedRequestException($response);
 
-        $this->assertInstanceOf(FailedRequest::class, $failedRequest);
-        $this->assertFalse($failedRequest->isOk());
-        $this->assertEquals('Unauthorized', $failedRequest->getErrors()
-        );
+        $this->assertFalse($exception->isOk());
+        $this->assertEquals('Unauthorized', $exception->getErrors());
     }
 
     /** @test */
@@ -44,16 +41,18 @@ class BaseResponseTest extends TestCase
     {
         $response = $this->iugu->client->get($this->url('422'));
 
-        $response = $response->to(ChargeResponse::class);
+        try {
+            $response = $response->to(ChargeResponse::class);
+        } catch (FailedRequestException $exception) {
+            $this->assertInstanceOf(FailedRequestException::class, $exception);
+            $this->assertFalse($exception->isOk());
+            $this->assertEquals([
+                'due_date' => [
+                    'should not be in the past',
+                ],
+            ], $exception->getErrors()
+            );
+        }
 
-        $this->assertInstanceOf(FailedRequest::class, $response);
-        $this->assertFalse($response->isOk());
-        $this->assertEquals([
-            'due_date' => [
-                'should not be in the past',
-            ],
-        ], $response->getErrors()
-        );
     }
-
 }
