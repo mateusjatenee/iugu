@@ -86,11 +86,21 @@ class Iugu
         return new Transfer($this);
     }
 
+    /**
+     * Returns a SubAccount instance.
+     *
+     * @return \Mateusjatenee\Iugu\SubAccount
+     */
     public function subAccounts()
     {
         return new SubAccount($this);
     }
 
+    /**
+     * An alias to the subAccounts method.
+     *
+     * @return \Mateusjatenee\Iugu\SubAccount
+     */
     public function marketplace()
     {
         return $this->subAccounts();
@@ -119,6 +129,11 @@ class Iugu
         return tap($this)->setAuth($token, '');
     }
 
+    /**
+     * Sets the HTTP client.
+     *
+     * @param $client
+     */
     public function setClient($client)
     {
         $this->client = $client;
@@ -147,6 +162,11 @@ class Iugu
         });
     }
 
+    /**
+     * Register the necessary macros.
+     *
+     * @return void
+     */
     public function registerMacros()
     {
         ZttpResponse::macro('to', function ($class) {

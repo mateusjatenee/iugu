@@ -15,7 +15,7 @@ class TestCase extends BaseTestCase
 
     public function setUp()
     {
-        $this->iugu = new Iugu(new PendingZttpRequest);
+        $this->iugu = new Iugu(new PendingZttpRequest, 'foo');
     }
 
     public function getStub($stub)
