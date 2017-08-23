@@ -32,6 +32,7 @@ class Iugu
     {
         $this->registerMacros();
         $this->setClient($client);
+        $this->setHeaders();
         $this->setAuth($token);
         static::setInstance($this);
     }
@@ -106,6 +107,11 @@ class Iugu
         return $this->subAccounts();
     }
 
+    /**
+     * Returns an instance of Invoice.
+     *
+     * @return \Mateusjatenee\Iugu\Invoice
+     */
     public function invoices()
     {
         return new Invoice($this);
@@ -142,6 +148,18 @@ class Iugu
     public function setClient($client)
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Sets the default HTTP headers.
+     */
+    public function setHeaders()
+    {
+        $this->client->withHeaders([
+            'Accept' => 'application/json',
+        ]);
 
         return $this;
     }

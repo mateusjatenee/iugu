@@ -17,6 +17,12 @@ class Invoice extends Resource
         $this->iugu = $iugu;
     }
 
+    /**
+     * Creates a new invoice.
+     *
+     * @param  array $data
+     * @return \Mateusjatenee\Iugu\Responses\InvoiceResponse
+     */
     public function create($data)
     {
         $response = $this->iugu->client->post(
@@ -26,6 +32,12 @@ class Invoice extends Resource
         return $response->to(InvoiceResponse::class);
     }
 
+    /**
+     * Finds an invoice by it's ID.
+     *
+     * @param  string $id
+     * @return \Mateusjatenee\Iugu\Responses\InvoiceResponse
+     */
     public function find($id)
     {
         $response = $this->iugu->client->get(
@@ -35,6 +47,12 @@ class Invoice extends Resource
         return $response->to(InvoiceResponse::class);
     }
 
+    /**
+     * Refunds an invoice.
+     *
+     * @param  \Mateusjatenee\Iugu\Responses\InvoiceResponse|string $id
+     * @return \Mateusjatenee\Iugu\Responses\InvoiceResponse
+     */
     public function refund($id)
     {
         if ($id instanceof InvoiceResponse) {
@@ -47,18 +65,4 @@ class Invoice extends Resource
 
         return $response->to(InvoiceResponse::class);
     }
-
-    public function requestWithdraw($id, $amount)
-    {
-        if ($id instanceof InvoiceResponse) {
-            $id = $id->id;
-        }
-
-        $response = $this->iugu->client->post(
-            $this->getEndpoint('accounts.withdraw', ['id' => $id]), ['amount' => $amount]
-        );
-
-        return $response->to(InvoiceResponse::class);
-    }
-
 }

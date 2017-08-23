@@ -20,6 +20,7 @@ class IuguTest extends TestCase
 
         $headers = $response['headers'];
 
+        $this->assertEquals('application/json', $headers['accept'][0]);
         $this->assertEquals('foo', $headers['php-auth-user'][0]);
         $this->assertEquals('', $headers['php-auth-pw'][0]);
     }
