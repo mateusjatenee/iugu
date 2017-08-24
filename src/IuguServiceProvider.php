@@ -4,7 +4,6 @@ namespace Mateusjatenee\Iugu;
 
 use Illuminate\Support\ServiceProvider;
 use Mateusjatenee\Iugu\Iugu;
-use Zttp\PendingZttpRequest;
 
 class IuguServiceProvider extends ServiceProvider
 {
@@ -13,7 +12,7 @@ class IuguServiceProvider extends ServiceProvider
         $apiToken = config('services.iugu.api_token');
 
         $this->app->singleton('iugu', function ($app) use ($apiToken) {
-            return new Iugu(new PendingZttpRequest, $apiToken);
+            return new Iugu($apiToken);
         });
     }
 }
