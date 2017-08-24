@@ -3,9 +3,9 @@
 namespace Mateusjatenee\Iugu\Testing\Integration;
 
 use Mateusjatenee\Iugu\Iugu;
-use Mateusjatenee\Iugu\Tests\TestCase;
+use Mateusjatenee\Iugu\Tests\IntegrationTestCase;
 
-class ChargeTest extends TestCase
+class ChargeTest extends IntegrationTestCase
 {
 
     /** @test */
