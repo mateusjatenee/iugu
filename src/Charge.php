@@ -2,6 +2,7 @@
 
 namespace Mateusjatenee\Iugu;
 
+use Mateusjatenee\Iugu\Iugu;
 use Mateusjatenee\Iugu\Resource;
 use Mateusjatenee\Iugu\Responses\ChargeResponse;
 use Mateusjatenee\Iugu\Responses\TokenResponse;
@@ -27,7 +28,7 @@ class Charge extends Resource
      */
     public function generateToken($accountId, $data)
     {
-        $response = $this->iugu->client->post($this->getEndpoint('create_token'), ['account_id' => $accountId] + $data);
+        $response = $this->iugu->client->post($this->getEndpoint('create_token'), $this->buildTokenData($accountId, $data));
 
         return new TokenResponse($response);
     }
@@ -45,5 +46,12 @@ class Charge extends Resource
         );
 
         return new ChargeResponse($response);
+    }
+
+    protected function buildTokenData($accountId, $data)
+    {
+        $data = array_merge($data, ['account_id' => $accountId]);
+
+        return $data;
     }
 }

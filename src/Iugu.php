@@ -24,14 +24,18 @@ class Iugu
      */
     public $token;
 
+    public $testing = false;
+
+    public $unitTesting = false;
+
     /**
      * @param mixed $client
      * @param string|null $token
      */
-    public function __construct($client, $token = null)
+    public function __construct($token = null)
     {
         $this->registerMacros();
-        $this->setClient($client);
+        $this->setClient();
         $this->setHeaders();
         $this->setAuth($token);
         static::setInstance($this);
@@ -45,7 +49,7 @@ class Iugu
     public static function getInstance()
     {
         if (is_null(static::$instance)) {
-            static::$instance = new static(new PendingZttpRequest);
+            static::$instance = new static;
         }
 
         return static::$instance;
@@ -145,8 +149,12 @@ class Iugu
      *
      * @param $client
      */
-    public function setClient($client)
+    public function setClient($client = null)
     {
+        if (is_null($client)) {
+            $client = new PendingZttpRequest;
+        }
+
         $this->client = $client;
 
         return $this;
@@ -183,6 +191,20 @@ class Iugu
             $iugu->token = $user;
             $iugu->client->withBasicAuth($user, $password);
         });
+    }
+
+    public function setTesting($testing = false)
+    {
+        $this->testing = $testing;
+
+        return $this;
+    }
+
+    public function setUnitTesting($testing = false)
+    {
+        $this->unitTesting = $testing;
+
+        return $this;
     }
 
     /**

@@ -4,7 +4,6 @@ namespace Mateusjatenee\Iugu\Tests;
 
 use Mateusjatenee\Iugu\Iugu;
 use PHPUnit\Framework\TestCase as BaseTestCase;
-use Zttp\PendingZttpRequest;
 
 class TestCase extends BaseTestCase
 {
@@ -15,7 +14,7 @@ class TestCase extends BaseTestCase
 
     public function setUp()
     {
-        $this->iugu = new Iugu(new PendingZttpRequest, 'foo');
+        $this->iugu = (new Iugu('foo'))->setUnitTesting(true)->setTesting(true);
     }
 
     public function getStub($stub)

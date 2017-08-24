@@ -3,6 +3,7 @@
 namespace Mateusjatenee\Iugu;
 
 use Illuminate\Support\Str;
+use Mateusjatenee\Iugu\Iugu;
 
 class Resource
 {
@@ -20,7 +21,7 @@ class Resource
 
     public function getEndpoints()
     {
-        if (getenv('IUGU_TESTING')) {
+        if ($this->isInUnitTestMode()) {
             return $this->testingEndpoints();
         }
 
@@ -68,5 +69,10 @@ class Resource
     protected function removeOptionalParams($endpoint)
     {
         return preg_replace('/{[\s\S]+?\?}/', '', $endpoint);
+    }
+
+    protected function isInUnitTestMode()
+    {
+        return Iugu::getInstance()->unitTesting;
     }
 }
