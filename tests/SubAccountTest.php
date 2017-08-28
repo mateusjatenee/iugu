@@ -54,7 +54,12 @@ class SubAccountTest extends TestCase
 
         $this->iugu->setToken('foo');
 
-        $subAccount = $this->iugu->subAccounts()->find(456);
+        $data = [
+            'name' => 'John Doe',
+            'commission_percent' => 20,
+        ];
+
+        $subAccount = $this->iugu->subAccounts()->create($data);
 
         $data = $this->getVerificationData();
 
@@ -65,7 +70,8 @@ class SubAccountTest extends TestCase
         $this->assertEquals($stub['account_id'], $verification->account_id);
         $this->assertEquals($data, $verification->requestData);
 
-        $this->assertEquals($subAccount->id, $verification->params['id']);
+        $this->assertEquals($subAccount->getId(), $verification->params['id']);
+        $this->assertEquals($subAccount->user_token, $verification->headers['php-auth-user'][0]);
     }
 
     /** @test */
@@ -79,13 +85,14 @@ class SubAccountTest extends TestCase
 
         $data = $this->getVerificationData();
 
-        $verification = $this->iugu->subAccounts()->verify($subAccount->id, $data);
+        $verification = $this->iugu->subAccounts()->verify([$subAccount->id, 'abc123'], $data);
 
         $this->assertResponseIsOk($verification);
         $this->assertEquals($stub['account_id'], $verification->account_id);
         $this->assertEquals($data, $verification->requestData);
 
         $this->assertEquals($subAccount->id, $verification->params['id']);
+        $this->assertEquals('abc123', $verification->headers['php-auth-user'][0]);
     }
 
     /** @test */

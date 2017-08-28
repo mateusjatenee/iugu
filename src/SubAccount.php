@@ -38,12 +38,21 @@ class SubAccount extends Resource
     public function verify($id, $data)
     {
         if ($id instanceof SubAccountResponse) {
-            $id = $id->id;
+            $userToken = $id->user_token;
+            $id = $id->getId();
+        } else {
+            [$id, $userToken] = $id;
         }
+
+        $token = tap($this->iugu->token, function () use ($userToken) {
+            $this->iugu->setAuth($userToken);
+        });
 
         $response = $this->iugu->client->post(
             $this->getEndpoint('accounts.verify', ['id' => $id]), $data
         );
+
+        $this->iugu->setAuth($token);
 
         return $response->to(SubAccountResponse::class);
     }
