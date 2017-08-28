@@ -18,6 +18,11 @@ class BaseResponse
         return $this->data[$property] ?? null;
     }
 
+    public function toArray()
+    {
+        return $this->data;
+    }
+
     public function isOk()
     {
         return $this->response->isOk();
