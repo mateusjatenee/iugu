@@ -49,7 +49,7 @@ class SubAccount extends Resource
         });
 
         $response = $this->iugu->client->post(
-            $this->getEndpoint('accounts.verify', ['id' => $id]), $data
+            $this->getEndpoint('accounts.verify', ['id' => $id]), ['data' => $data]
         );
 
         $this->iugu->setAuth($token);

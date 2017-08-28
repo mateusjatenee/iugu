@@ -68,7 +68,7 @@ class SubAccountTest extends TestCase
 
         $this->assertResponseIsOk($verification);
         $this->assertEquals($stub['account_id'], $verification->account_id);
-        $this->assertEquals($data, $verification->requestData);
+        $this->assertEquals($data, $verification->requestData['data']);
 
         $this->assertEquals($subAccount->getId(), $verification->params['id']);
         $this->assertEquals($subAccount->user_token, $verification->headers['php-auth-user'][0]);
@@ -89,7 +89,7 @@ class SubAccountTest extends TestCase
 
         $this->assertResponseIsOk($verification);
         $this->assertEquals($stub['account_id'], $verification->account_id);
-        $this->assertEquals($data, $verification->requestData);
+        $this->assertEquals($data, $verification->requestData['data']);
 
         $this->assertEquals($subAccount->id, $verification->params['id']);
         $this->assertEquals('abc123', $verification->headers['php-auth-user'][0]);
