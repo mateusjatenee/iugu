@@ -41,7 +41,7 @@ class SubAccount extends Resource
             $userToken = $id->user_token;
             $id = $id->getId();
         } else {
-            [$id, $userToken] = $id;
+            list($id, $userToken) = $id;
         }
 
         $token = tap($this->iugu->token, function () use ($userToken) {
