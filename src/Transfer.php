@@ -8,6 +8,9 @@ use Mateusjatenee\Iugu\Responses\TransferResponse;
 
 class Transfer extends Resource
 {
+    /**
+     * @var \Mateusjatenee\Iugu\Iugu
+     */
     private $iugu;
 
     /**

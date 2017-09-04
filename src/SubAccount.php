@@ -7,6 +7,9 @@ use Mateusjatenee\Iugu\Responses\SubAccountResponse;
 
 class SubAccount extends Resource
 {
+    /**
+     * @var \Mateusjatenee\Iugu\Iugu
+     */
     private $iugu;
 
     /**
@@ -17,6 +20,12 @@ class SubAccount extends Resource
         $this->iugu = $iugu;
     }
 
+    /**
+     * Creates a sub account.
+     *
+     * @param array $data
+     * @return \Mateusjatenee\Iugu\Responses\SubAccountResponse
+     */
     public function create($data)
     {
         $response = $this->iugu->client->post(
@@ -26,6 +35,12 @@ class SubAccount extends Resource
         return $response->to(SubAccountResponse::class);
     }
 
+    /**
+     * Finds a sub account.
+     *
+     * @param string $id
+     * @return \Mateusjatenee\Iugu\Responses\SubAccountResponse
+     */
     public function find($id)
     {
         $response = $this->iugu->client->get(
@@ -35,6 +50,13 @@ class SubAccount extends Resource
         return $response->to(SubAccountResponse::class);
     }
 
+    /**
+     * Verifies a given sub account.
+     *
+     * @param array|\Mateusjatenee\Iugu\Responses\SubAccountResponse $id
+     * @param array $data
+     * @return \Mateusjatenee\Iugu\Responses\SubAccountResponse
+     */
     public function verify($id, $data)
     {
         if ($id instanceof SubAccountResponse) {
@@ -57,6 +79,11 @@ class SubAccount extends Resource
         return $response->to(SubAccountResponse::class);
     }
 
+    /**
+     * @param $id
+     * @param $amount
+     * @return mixed
+     */
     public function requestWithdraw($id, $amount)
     {
         if ($id instanceof SubAccountResponse) {
