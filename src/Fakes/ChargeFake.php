@@ -5,11 +5,13 @@ namespace Mateusjatenee\Iugu\Fakes;
 use Mateusjatenee\Iugu\Iugu;
 use PHPUnit\Framework\Assert as PHPUnit;
 
-class ChargeFake
+class ChargeFake extends BaseFake
 {
     protected $tokens;
 
     protected $charges;
+
+    protected $expectedResponse = null;
 
     public function assertTokenWasGenerated($callback = null)
     {
@@ -33,12 +35,16 @@ class ChargeFake
             'account_id' => $accountId,
         ], $data);
 
+        $this->data = $this->getStub('token.json');
+
         return $this;
     }
 
     public function directCharge($data)
     {
         $this->charges[] = $data;
+
+        $this->data = $this->getStub('charge.json');
 
         return $this;
     }
@@ -75,5 +81,10 @@ class ChargeFake
         return collect($this->charges)->filter(function ($data) use ($callback) {
             return $callback($data);
         });
+    }
+
+    public function getToken()
+    {
+        return $this->id;
     }
 }

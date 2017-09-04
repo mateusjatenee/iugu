@@ -12,21 +12,19 @@ class ChargeFakeTest extends TestCase
         $this->fake = new ChargeFake;
     }
 
-    /** @test
-     * @expectedException PHPUnit\Framework\ExpectationFailedException
-     * @expectedExceptionMessage The expected token was not generated.
-     */
+    /** @test */
     public function test_charge_method()
     {
+        $response = $this->fake->generateToken(123, ['method' => 'credit_card']);
+
+        $this->assertNotNull($response->id);
+        $this->assertNotNull($response->getToken());
+        $this->assertEquals('credit_card', $response->method);
+
         $this->fake->assertTokenWasGenerated(function ($token) {
             return $token['method'] == 'credit_card';
         });
 
-        $this->fake->generateToken(123, ['method' => 'credit_card']);
-
-        $this->fake->assertTokenWasGenerated(function ($token) {
-            return $token['method'] == 'credit_card';
-        });
     }
 
     /** @test
@@ -34,6 +32,17 @@ class ChargeFakeTest extends TestCase
      * @expectedExceptionMessage The expected charge was not found.
      */
     public function it_does_not_find_a_charge()
+    {
+        $this->fake->assertCharged(function ($charge) {
+            return $charge['email'] === 'mateus@weenside.com';
+        });
+    }
+
+    /** @test
+     * @expectedException PHPUnit\Framework\ExpectationFailedException
+     * @expectedExceptionMessage The expected charge was not found.
+     */
+    public function it_asserts_a_charge_does_not_exist()
     {
         $this->fake->assertCharged(function ($charge) {
             return $charge['email'] === 'mateus@weenside.com';
