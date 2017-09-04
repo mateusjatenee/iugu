@@ -15,7 +15,18 @@ class SubAccountFakeTest extends TestCase
     /** @test */
     public function test_create_method()
     {
-        $this->fake->create(['name' => 'foo']);
+        $response = $this->fake->create(['name' => 'foo']);
+
+        $this->assertNotNull($response->account_id);
+        $this->assertEquals($response->account_id, $response->getId());
+
+        $array = $response->toArray();
+
+        $this->assertArrayHasKey('account_id', $array);
+        $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('live_api_token', $array);
+        $this->assertArrayHasKey('test_api_token', $array);
+        $this->assertArrayHasKey('user_token', $array);
 
         $this->fake->assertCreated(function ($account) {
             return $account['name'] === 'foo';
@@ -36,7 +47,22 @@ class SubAccountFakeTest extends TestCase
     /** @test */
     public function test_assert_found()
     {
-        $this->fake->find(123);
+        $response = $this->fake->find(123);
+
+        $this->assertNotNull($response->id);
+        $this->assertEquals($response->id, $response->getId());
+
+        $array = $response->toArray();
+
+        $this->assertArrayHasKey('name', $array);
+        $this->assertArrayHasKey('created_at', $array);
+        $this->assertArrayHasKey('updated_at', $array);
+        $this->assertArrayHasKey('can_receive?', $array);
+        $this->assertArrayHasKey('is_verified?', $array);
+        $this->assertArrayHasKey('informations', $array);
+        $this->assertArrayHasKey('balance', $array);
+        $this->assertArrayHasKey('balance_available_for_withdraw', $array);
+        $this->assertArrayHasKey('receivable_balance', $array);
 
         $this->fake->assertFound(123);
     }

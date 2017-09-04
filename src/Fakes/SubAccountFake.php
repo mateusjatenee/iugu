@@ -2,10 +2,11 @@
 
 namespace Mateusjatenee\Iugu\Fakes;
 
+use Mateusjatenee\Iugu\Fakes\BaseFake;
 use Mateusjatenee\Iugu\Iugu;
 use PHPUnit\Framework\Assert as PHPUnit;
 
-class SubAccountFake
+class SubAccountFake extends BaseFake
 {
     protected $createdAccounts = [];
 
@@ -48,11 +49,19 @@ class SubAccountFake
     public function create($data)
     {
         $this->createdAccounts[] = $data;
+
+        $this->data = $this->getStub('sub_account_create.json');
+
+        return $this;
     }
 
     public function find($id)
     {
         $this->foundAccounts[] = $id;
+
+        $this->data = $this->getStub('sub_account_find.json');
+
+        return $this;
     }
 
     public function verify($id, $data)
@@ -63,5 +72,10 @@ class SubAccountFake
     public function requestWithdraw($id, $amount)
     {
 
+    }
+
+    public function getId()
+    {
+        return $this->account_id ?? $this->id;
     }
 }
