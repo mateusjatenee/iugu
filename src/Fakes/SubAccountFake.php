@@ -4,10 +4,15 @@ namespace Mateusjatenee\Iugu\Fakes;
 
 use Mateusjatenee\Iugu\Fakes\BaseFake;
 use Mateusjatenee\Iugu\Iugu;
+use Mateusjatenee\Iugu\Singleton;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class SubAccountFake extends BaseFake
 {
+    use Singleton;
+
+    static $instance;
+
     protected $createdAccounts = [];
 
     protected $foundAccounts = [];

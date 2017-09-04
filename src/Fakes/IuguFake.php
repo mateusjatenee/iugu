@@ -8,17 +8,17 @@ class IuguFake
 {
     public function charge()
     {
-        return new ChargeFake($this);
+        return ChargeFake::getInstance($this);
     }
 
     public function transfers()
     {
-        return new TransferFake($this);
+        return TransferFake::getInstance($this);
     }
 
     public function subAccounts()
     {
-        return new SubAccountFake($this);
+        return SubAccountFake::getInstance($this);
     }
 
     public function marketplace()
@@ -28,7 +28,7 @@ class IuguFake
 
     public function invoices()
     {
-        return new InvoiceFake($this);
+        return InvoiceFake::getInstance($this);
     }
 
     public function setToken($token)

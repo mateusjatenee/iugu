@@ -3,10 +3,15 @@
 namespace Mateusjatenee\Iugu\Fakes;
 
 use Mateusjatenee\Iugu\Iugu;
+use Mateusjatenee\Iugu\Singleton;
 use PHPUnit\Framework\Assert as PHPUnit;
 
 class ChargeFake extends BaseFake
 {
+    use Singleton;
+
+    static $instance;
+
     protected $tokens;
 
     protected $charges;

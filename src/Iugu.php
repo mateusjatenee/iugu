@@ -4,12 +4,15 @@ namespace Mateusjatenee\Iugu;
 
 use Mateusjatenee\Iugu\Charge;
 use Mateusjatenee\Iugu\Exceptions\FailedRequestException;
+use Mateusjatenee\Iugu\Singleton;
 use Mateusjatenee\Iugu\SubAccount;
 use Zttp\PendingZttpRequest;
 use Zttp\ZttpResponse;
 
 class Iugu
 {
+    use Singleton;
+
     protected static $instance;
 
     /**
@@ -39,31 +42,6 @@ class Iugu
         $this->setHeaders();
         $this->setAuth($token);
         static::setInstance($this);
-    }
-
-    /**
-     * Set the globally available instance of the class.
-     *
-     * @return static
-     */
-    public static function getInstance()
-    {
-        if (is_null(static::$instance)) {
-            static::$instance = new static;
-        }
-
-        return static::$instance;
-    }
-
-    /**
-     * Set the shared instance of the class.
-     *
-     * @param  \Mateusjatenee\Iugu\Iugu  $container
-     * @return static
-     */
-    public static function setInstance($iugu = null)
-    {
-        return static::$instance = $iugu;
     }
 
     /**

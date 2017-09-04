@@ -19,10 +19,22 @@ class IuguFakeTest extends TestCase
     /** @test */
     public function it_returns_fake_instances()
     {
-        $this->assertInstanceOf(ChargeFake::class, $this->fake->charge());
-        $this->assertInstanceOf(TransferFake::class, $this->fake->transfers());
-        $this->assertInstanceOf(SubAccountFake::class, $this->fake->subAccounts());
-        $this->assertInstanceOf(SubAccountFake::class, $this->fake->marketplace());
-        $this->assertInstanceOf(InvoiceFake::class, $this->fake->invoices());
+        $charge = $this->fake->charge();
+        $transfers = $this->fake->transfers();
+        $subAccounts = $this->fake->subAccounts();
+        $marketplace = $this->fake->marketplace();
+        $invoices = $this->fake->invoices();
+
+        $this->assertInstanceOf(ChargeFake::class, $charge);
+        $this->assertInstanceOf(TransferFake::class, $transfers);
+        $this->assertInstanceOf(SubAccountFake::class, $subAccounts);
+        $this->assertInstanceOf(SubAccountFake::class, $marketplace);
+        $this->assertInstanceOf(InvoiceFake::class, $invoices);
+
+        $this->assertSame($charge, $this->fake->charge());
+        $this->assertSame($transfers, $this->fake->transfers());
+        $this->assertSame($subAccounts, $this->fake->subAccounts());
+        $this->assertSame($marketplace, $this->fake->marketplace());
+        $this->assertSame($invoices, $this->fake->invoices());
     }
 }
