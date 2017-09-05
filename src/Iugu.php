@@ -4,6 +4,7 @@ namespace Mateusjatenee\Iugu;
 
 use Mateusjatenee\Iugu\Charge;
 use Mateusjatenee\Iugu\Exceptions\FailedRequestException;
+use Mateusjatenee\Iugu\Fakes\IuguFake;
 use Mateusjatenee\Iugu\Singleton;
 use Mateusjatenee\Iugu\SubAccount;
 use Zttp\PendingZttpRequest;
@@ -183,6 +184,26 @@ class Iugu
         $this->unitTesting = $testing;
 
         return $this;
+    }
+
+    /**
+     * An alias to the getInstance method.
+     *
+     * @return mixed
+     */
+    public static function get()
+    {
+        return self::getInstance();
+    }
+
+    /**
+     * Swaps the current instance of the class for a fake.
+     *
+     * @return \Mateusjatenee\Iugu\Fakes\IuguFake
+     */
+    public static function fake()
+    {
+        self::setInstance(new IuguFake);
     }
 
     /**
