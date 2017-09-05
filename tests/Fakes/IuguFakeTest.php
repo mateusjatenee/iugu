@@ -13,7 +13,7 @@ class IuguFakeTest extends TestCase
 {
     public function setUp()
     {
-        $this->fake = new IuguFake;
+        $this->fake = IuguFake::getInstance();
     }
 
     /** @test */
