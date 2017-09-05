@@ -17,13 +17,11 @@ class Iugu
     protected static $instance;
 
     /**
-     * The HTTP client
-     * @var mixed
+     * @var \Zttp\PendingZttpRequest
      */
     public $client;
 
     /**
-     * The API token
      * @var string
      */
     public $token;
@@ -191,9 +189,9 @@ class Iugu
      *
      * @return mixed
      */
-    public static function get()
+    public static function get(...$args)
     {
-        return self::getInstance();
+        return self::getInstance(...$args);
     }
 
     /**

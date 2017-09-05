@@ -31,9 +31,13 @@ class IuguTest extends TestCase
     {
         $this->assertInstanceOf(Iugu::class, Iugu::get());
 
-        Iugu::fake();
+        $instance = tap(Iugu::get(), function ($iugu) {
+            Iugu::fake();
+        });
 
         $this->assertInstanceOf(IuguFake::class, Iugu::get());
+
+        Iugu::setInstance($instance);
     }
 
 }

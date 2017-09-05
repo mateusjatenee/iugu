@@ -14,7 +14,7 @@ class TestCase extends BaseTestCase
 
     public function setUp()
     {
-        $this->iugu = (new Iugu('foo'))->setUnitTesting(true)->setTesting(true);
+        $this->iugu = Iugu::get('foo')->setUnitTesting(true)->setTesting(true);
     }
 
     public function getStub($stub)
